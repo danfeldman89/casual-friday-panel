@@ -1,0 +1,29 @@
+// Define a Permission type based on the shape of the Permission.cs class.
+export interface Permission {
+  id: string;           // Unique identifier for the permission
+  name: string;         // Name of the permission (e.g., "View Users")
+  resource: string;     // Resource the permission applies to (e.g., "Users", "Dashboard")
+  canRead: boolean;     // Can the permission allow read operations
+  canWrite: boolean;    // Can the permission allow write operations
+}
+
+// Define a Role type as a list of role names (strings).
+export type Role = string;
+
+// Define a UserAuth type that includes tokens, user information, roles, and permissions.
+export interface UserAuth {
+  token: string;          // Token assigned to the authenticated user
+  username: string;       // Username of the authenticated account
+  roles: Role[];          // Array of roles (just identifiers/names for the roles)
+  permissions: Permission[]; // Array of permissions granted to the user
+  expiresAt: string;      // Expiration date-time of the token in ISO 8601 string format
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  isActive: boolean;
+  roleIds: string[];
+}

@@ -1,0 +1,23 @@
+
+### POST request for authentication, should return valid answer
+POST http://localhost:200/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin123"
+}
+
+### POST request for authentication, should return invalid answer
+POST http://localhost:200/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin1",
+    "password": "admin123"
+}
+
+### GET request for all users
+GET http://localhost:200/api/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjY3YjZhODY3OTU3ODAyZWJjMDI0MDVmYiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQGV4YW1wbGUuY29tIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiQWRtaW4iLCJwZXJtaXNzaW9uIjpbIkNhdGFsb2dzOlJlYWRDYXRhbG9ncyIsIkNhdGFsb2dzOldyaXRlQ2F0YWxvZ3MiLCJQZXJtaXNzaW9uczpSZWFkUGVybWlzc2lvbnMiLCJQZXJtaXNzaW9uczpXcml0ZVBlcm1pc3Npb25zIiwiUm9sZXM6UmVhZFJvbGVzIiwiUm9sZXM6V3JpdGVSb2xlcyIsIlVzZXJzOlJlYWRVc2VycyIsIlVzZXJzOldyaXRlVXNlcnMiXSwiZXhwIjoxNzQwMDI4NDI5LCJpc3MiOiJCYWNrb2ZmaWNlVGVzdEFQSSIsImF1ZCI6IkJhY2tvZmZpY2VUZXN0QVBJIn0.9UF4ILfePk65dsVrGZ6ZtgXOgQCPcWfq2D5oVJMuV34

@@ -1,0 +1,47 @@
+.root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #f8f9fa; /* Light background */
+}
+
+.loginContainer {
+    width: 100%;
+    max-width: 400px; /* Limit maximum width of the form */
+    background: #ffffff; /* White background */
+    padding: 2rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputGroup {
+    margin-bottom: 1.5rem; /* Space between input groups */
+}
+
+.inputField {
+    width: 100%; /* Full width */
+    padding: 0.75rem;
+    border: 1px solid #ced4da; /* Border color */
+    border-radius: 4px; /* Rounded corners for input */
+    font-size: 1rem; /* Base font size */
+}
+
+.inputField:focus {
+    outline: none;
+    border-color: #007bff; /* Highlight border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Soft focus shadow */
+}
+
+.loginButton:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.loginButton:active {
+    background-color: #003f7f; /* Even darker blue on click */
+}
