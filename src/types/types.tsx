@@ -7,8 +7,12 @@ export interface Permission {
   canWrite: boolean;    // Can the permission allow write operations
 }
 
-// Define a Role type as a list of role names (strings).
-export type Role = string;
+export interface Role {
+  id: string; // Unique identifier for the role
+  name: string; // Name of the role
+  description: string; // Description of the role
+  permissions: Permission[]; // List of permissions assigned to the role
+}
 
 // Define a UserAuth type that includes tokens, user information, roles, and permissions.
 export interface UserAuth {

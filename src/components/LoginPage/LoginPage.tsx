@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './LoginPage.module.css';
 import { UserAuth } from "../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../api/login.ts";
 
 interface LoginPageProps {}
 
@@ -19,18 +20,7 @@ function LoginPage({}: LoginPageProps) {
 
     const loginPayload = { username, password };
 
-    fetch('http://localhost:200/api/Auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(loginPayload)
-    })
-      .then(async (response) => {
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Login failed');
-        }
-        return response.json();
-      })
+    login(loginPayload)
       .then((data: UserAuth) => {
         console.log('User authenticated:', data);
 
@@ -38,10 +28,10 @@ function LoginPage({}: LoginPageProps) {
         alert('Login successful!');
         navigate('/dashboard');
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error during login:', error.message);
         alert(error.message);
-      });
+      })
   }
 
   return (

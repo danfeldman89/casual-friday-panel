@@ -1,60 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Badge, Box, Button, CircularProgress, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Toolbar, Tooltip, Typography } from "@mui/material";
-import { User } from "../../types/types";
-import { Add } from "@mui/icons-material";
+import { Alert, Box, CircularProgress, Paper, Tab, TableContainer, Tabs, Toolbar, Typography } from "@mui/material";
+import { Role, User } from "../../types/types";
 import TabPanel from "../TabPanel/TabPanel.tsx";
+import UsersTable from "./Tables/UsersTable.tsx";
+import { getUsers } from "../../api/user.ts";
+import { getRoles } from "../../api/roles.ts";
+import RolesTable from "./Tables/RolesTable.tsx";
 
 interface DashboardProps {}
 
 const Dashboard: React.FC<DashboardProps> = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const token = localStorage.getItem("authToken");
-      if (!token) {
-        setError("Authorization token is missing. Please log in.");
-        setLoading(false);
-        return;
-      }
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      setError("Authorization token is missing. Please log in.");
+      setLoading(false);
+      return;
+    }
 
-      try {
-        const response = await fetch("http://localhost:200/api/users", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          }
-        });
+    getUsers()
+      .then((response) => response.json())
+      .then((users: User[]) => setUsers(users))
+      .catch((err: any) => setError(err.message))
+      .finally(() => setLoading(false));
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch users.");
-        }
+    getRoles()
+      .then((response) => response.json())
+      .then((roles: Role[]) => setRoles(roles))
+      .catch((err: any) => setError(err.message))
+      .finally(() => setLoading(false));
 
-        const data: User[] = await response.json();
-        setUsers(data); // Update users state with the fetched data
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUsers();
   }, []);
 
   if (loading) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
+      <Box display="flex"
+           justifyContent="center"
+           alignItems="center"
+           height="100vh">
         <CircularProgress />
       </Box>
     );
@@ -85,58 +74,12 @@ const Dashboard: React.FC<DashboardProps> = () => {
           <Tab label="Permissions" sx={{ outline: "none", "&:focus": { outline: "none" } }} />
         </Tabs>
         <TabPanel value={selectedTab} index={0}>
-          <TableContainer>
-            <Box sx={{ display: "flex", gap: 1 }}>
-              <Button startIcon={<Add />} />
-            </Box>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Username</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell align="center">Active</TableCell>
-                  <TableCell align="center">Roles</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {users.map((user) => <TableRow key={user.id}>
-                  <TableCell>{user.username}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell align="center">{user.isActive ? "Yes" : "No"}</TableCell>
-
-                  <TableCell align="center">
-                    <Tooltip
-                      title={
-                        <Box>
-                          <div>User Roles:</div>
-                          <ul>{user.roleIds.map((role: string) => <li key={role}>{role}</li>)}</ul>
-                        </Box>
-                      }>
-
-                      <Badge
-                        badgeContent={user.roleIds.length}
-                        sx={{
-                          "& .MuiBadge-badge": {
-                            backgroundColor: "#4caf50",
-                            cursor: "pointer",
-                            userSelect: "none",
-                            color: "white",
-                            borderRadius: "4px",
-                            fontSize: "0.75rem"
-                          }
-                        }}
-                      />
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>)}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <UsersTable users={users} />
         </TabPanel>
 
         <TabPanel value={selectedTab} index={1}>
           <TableContainer>
-            {/* Another table content goes here */}
+            <RolesTable roles={roles}/>
           </TableContainer>
         </TabPanel>
       </Paper>
