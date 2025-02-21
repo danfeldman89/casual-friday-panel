@@ -22,6 +22,7 @@ function UsersTable({ users }: UsersTableProps) {
             <TableCell>Email</TableCell>
             <TableCell align="center">Active</TableCell>
             <TableCell align="center">Roles</TableCell>
+            <TableCell align="center"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -53,6 +54,14 @@ function UsersTable({ users }: UsersTableProps) {
                   }}
                 />
               </Tooltip>
+            </TableCell>
+            <TableCell align="center">
+              <Button
+                variant="outlined"
+                size="small"
+                onClick={() => navigate(`/edit-user/${user.id}`)}>
+                Edit
+              </Button>
             </TableCell>
           </TableRow>)}
         </TableBody>

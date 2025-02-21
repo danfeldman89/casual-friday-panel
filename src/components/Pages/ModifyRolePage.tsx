@@ -7,7 +7,7 @@ import { Close } from "@mui/icons-material";
 import { createRole } from "../../api/roles.ts";
 import { Permission } from "../../types/types.tsx";
 
-function CreateRolePage() {
+function ModifyRolePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const permissions = useSelector((state: RootState) => state.permissions.permissionsCollection);
@@ -114,4 +114,4 @@ function CreateRolePage() {
   );
 }
 
-export default CreateRolePage;
+export default ModifyRolePage;

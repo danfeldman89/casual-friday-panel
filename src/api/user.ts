@@ -41,8 +41,8 @@ export async function createUser(user: User): Promise<Response> {
   });
 }
 
-export async function updateUser(userId: string, user: User): Promise<Response> {
-  const url = `${BASE_URL_USERS}/${userId}`;
+export async function updateUser(user: User): Promise<Response> {
+  const url = `${BASE_URL_USERS}/${user.id}`;
   const token = localStorage.getItem("authToken");
 
   return fetch(url, {

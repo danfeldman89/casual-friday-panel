@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Navigate, Route, Routes } from "react-router-d
 import LoginPage from "./components/LoginPage/LoginPage.tsx";
 import Dashboard from "./components/Dashboard/Dashboard.tsx";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
-import CreateUserPage from "./components/Pages/CreateUserPage.tsx";
-import CreateRolePage from "./components/Pages/CreateRolePage.tsx";
+import ModifyUserPage from "./components/Pages/ModifyUserPage.tsx";
+import ModifyRolePage from "./components/Pages/ModifyRolePage.tsx";
 
 function App() {
   return (
@@ -16,8 +16,11 @@ function App() {
           <ProtectedRoute>
             <Dashboard />
           </ProtectedRoute>} />
-        <Route path="/create-user" element={<CreateUserPage />} />
-        <Route path="/create-role" element={<CreateRolePage />} />
+        <Route path="/create-user" element={<ModifyUserPage />} />
+        <Route path="/create-role" element={<ModifyRolePage />} />
+
+
+        <Route path="/edit-user/:id" element={<ModifyUserPage />} />
       </Routes>
     </Router>
   );
