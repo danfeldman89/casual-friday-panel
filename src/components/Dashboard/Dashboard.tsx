@@ -5,13 +5,19 @@ import TabPanel from "../TabPanel/TabPanel.tsx";
 import UsersTable from "./Tables/UsersTable.tsx";
 import { getUsers } from "../../api/user.ts";
 import { getRoles } from "../../api/roles.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUsers } from "../../store/userSlice.ts";
+import { RootState } from "../../store/store.ts";
+import { updateRoles } from "../../store/roleSlice.ts";
 import RolesTable from "./Tables/RolesTable.tsx";
 
 interface DashboardProps {}
 
 const Dashboard: React.FC<DashboardProps> = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [roles, setRoles] = useState<Role[]>([]);
+  const dispatch = useDispatch();
+
+  const users = useSelector((state: RootState) => state.users.usersCollection);
+  const roles = useSelector((state: RootState) => state.roles.rolesCollection);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -26,13 +32,13 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
     getUsers()
       .then((response) => response.json())
-      .then((users: User[]) => setUsers(users))
+      .then((users: User[]) => dispatch(updateUsers(users)))
       .catch((err: any) => setError(err.message))
       .finally(() => setLoading(false));
 
     getRoles()
       .then((response) => response.json())
-      .then((roles: Role[]) => setRoles(roles))
+      .then((roles: Role[]) => dispatch(updateRoles(roles)))
       .catch((err: any) => setError(err.message))
       .finally(() => setLoading(false));
 
@@ -79,7 +85,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
         <TabPanel value={selectedTab} index={1}>
           <TableContainer>
-            <RolesTable roles={roles}/>
+            <RolesTable roles={roles} />
           </TableContainer>
         </TabPanel>
       </Paper>
