@@ -1,18 +1,19 @@
 import { Badge, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { Permission, Role } from "../../../types/types.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface RolesTableProps {
   roles: Role[];
 }
 
 function RolesTable({ roles }: RolesTableProps) {
-  console.log(roles);
+  const navigate = useNavigate();
 
   return (
     <TableContainer>
       <Box sx={{ display: "flex", gap: 1 }}>
-        <Button startIcon={<Add />} />
+        <Button startIcon={<Add />} onClick={() => navigate('/create-role')} />
       </Box>
       <Table>
         <TableHead>

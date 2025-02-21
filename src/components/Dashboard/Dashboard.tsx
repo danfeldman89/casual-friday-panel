@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Box, CircularProgress, Paper, Tab, TableContainer, Tabs, Toolbar, Typography } from "@mui/material";
-import { Role, User } from "../../types/types";
+import { Permission, Role, User } from "../../types/types";
 import TabPanel from "../TabPanel/TabPanel.tsx";
 import UsersTable from "./Tables/UsersTable.tsx";
 import { getUsers } from "../../api/user.ts";
@@ -10,6 +10,8 @@ import { updateUsers } from "../../store/userSlice.ts";
 import { RootState } from "../../store/store.ts";
 import { updateRoles } from "../../store/roleSlice.ts";
 import RolesTable from "./Tables/RolesTable.tsx";
+import { getPermissions } from "../../api/permissions.ts";
+import { updatePermissions } from "../../store/permissionSlice.ts";
 
 interface DashboardProps {}
 
@@ -42,6 +44,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
       .catch((err: any) => setError(err.message))
       .finally(() => setLoading(false));
 
+    getPermissions()
+      .then((response) => response.json())
+      .then((permissions: Permission[]) => dispatch(updatePermissions(permissions)))
+      .catch((err: any) => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) {

@@ -5,6 +5,10 @@
     text-align: center;
 }
 
+span {
+    color: var(--app-font-color);
+}
+
 .logo {
     height: 6em;
     padding: 1.5em;

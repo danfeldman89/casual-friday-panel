@@ -1,16 +1,19 @@
 import { Badge, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { User } from "../../../types/types.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface UsersTableProps {
   users: User[];
 }
 
 function UsersTable({ users }: UsersTableProps) {
+  const navigate = useNavigate();
+  
   return (
     <TableContainer>
       <Box sx={{ display: "flex", gap: 1 }}>
-        <Button startIcon={<Add />} />
+        <Button startIcon={<Add />} onClick={() => navigate('/create-user')} />
       </Box>
       <Table>
         <TableHead>
