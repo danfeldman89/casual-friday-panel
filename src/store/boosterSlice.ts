@@ -3,6 +3,7 @@ import { Booster, BoosterResponse } from "../types/types";
 
 interface InitialState {
   boostersCollection: Booster[];
+  boostersIndex?: string,
   filter: string;
 }
 
@@ -14,6 +15,7 @@ const boostersSlice = createSlice({
                                     reducers: {
                                       updateBoosters: (state, action: PayloadAction<BoosterResponse[]>) => {
                                         state.boostersCollection = action.payload[0].boosters;
+                                        state.boostersIndex = action.payload[0].id;
                                       },
                                       addBooster: (state, action: PayloadAction<Booster>) => {
                                         state.boostersCollection.push(action.payload);

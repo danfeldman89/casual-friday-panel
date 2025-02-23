@@ -3,9 +3,9 @@ import { Add } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { Booster, BoosterResponse, isPermitted } from "../../types/types";
 import { useEffect, useState } from "react";
-import { getBoostersApi } from "../../api/boosters";
+import { deleteBoosterApi, getBoostersApi } from "../../api/boosters";
 import { useDispatch, useSelector } from "react-redux";
-import { updateBoosters } from "../../store/boosterSlice";
+import { deleteBooster, updateBoosters } from "../../store/boosterSlice";
 import { RootState } from "../../store/store";
 import { useCurrentUser } from "../../hooks/useCurrentUser.ts";
 
@@ -17,7 +17,7 @@ function BoostersTable() {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedType, setSelectedType] = useState<string>("all");
 
-  const boosters = useSelector((state: RootState) => state.boosters.boostersCollection);
+  const boosters = useSelector((state: RootState) => state.boosters);
   const current = useCurrentUser();
 
   useEffect(() => {
@@ -33,8 +33,8 @@ function BoostersTable() {
   };
 
   const filteredBoosters = selectedType === "all"
-                           ? boosters
-                           : boosters.filter((booster) => booster.type.toString() === selectedType);
+                           ? boosters.boostersCollection
+                           : boosters.boostersCollection.filter((booster) => booster.type.toString() === selectedType);
 
   const getUniqueBoosterTypes = (boosters: Booster[]) => {
     const types = new Set<number>(boosters.map((booster) => booster.type));
@@ -75,7 +75,7 @@ function BoostersTable() {
           variant="outlined"
           size="small">
           <MenuItem value="all">All Types</MenuItem>
-          {getUniqueBoosterTypes(boosters).map((type) => (
+          {getUniqueBoosterTypes(boosters.boostersCollection).map((type) => (
             <MenuItem key={type} value={type.toString()}>Type {type}</MenuItem>
           ))}
         </Select>
@@ -106,11 +106,21 @@ function BoostersTable() {
                  <TableCell align="center">{booster.duration} days</TableCell>
                  <TableCell align="center">{booster.isActive ? "Active" : "Inactive"}</TableCell>
                  {isPermitted(current, 'Catalogs', 'Write') && <TableCell align="center">
-                     <Button
-                         variant="outlined"
-                         size="small"
-                         onClick={() => navigate(`/edit-booster/${booster}`)}>
+                     <Button sx={{ margin: "0 0.5rem" }}
+                             variant="outlined"
+                             size="small"
+                             onClick={() => navigate(`/edit-booster/${booster}`)}>
                          Edit
+                     </Button>
+                     <Button sx={{ margin: "0 0.5rem" }}
+                             variant="outlined"
+                             size="small"
+                             onClick={() => {
+                               const boosterIndex = boosters.boostersCollection.findIndex((boosterInCatalog) => boosterInCatalog.name === booster.name);
+                               dispatch(deleteBooster(booster.name));
+                               deleteBoosterApi(boosterIndex.toString(), boosters.boostersIndex);
+                             }}>
+                         Delete
                      </Button>
                  </TableCell>}
                </TableRow>

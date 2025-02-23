@@ -4,9 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { Close } from "@mui/icons-material";
 import { createBoosterApi } from "../../api/boosters";
 import { Booster } from "../../types/types";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store.ts";
 
 function CreateBoosterPage() {
   const navigate = useNavigate();
+  const boosters = useSelector((state: RootState) => state.boosters);
   const [formBooster, setFormBooster] = useState<Booster>({
                                                             name: "",
                                                             description: "",
@@ -35,7 +38,7 @@ function CreateBoosterPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    createBoosterApi(formBooster)
+    createBoosterApi(formBooster, boosters.boostersIndex)
       .then((response) => {
         if (response.ok) {
           alert("Booster created successfully!");
