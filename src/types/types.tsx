@@ -18,7 +18,7 @@ export interface Role {
 export interface UserAuth {
   token: string;          // Token assigned to the authenticated user
   username: string;       // Username of the authenticated account
-  roles: Role[];          // Array of roles (just identifiers/names for the roles)
+  roles: string[];          // Array of roles (just identifiers/names for the roles)
   permissions: Permission[]; // Array of permissions granted to the user
   expiresAt: string;      // Expiration date-time of the token in ISO 8601 string format
 }

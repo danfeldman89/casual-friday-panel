@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../types/types.tsx";
+import { User, UserAuth } from "../types/types.tsx";
 
 interface InitialState {
   usersCollection: User[];
   filter: string;
+  currentUser?: UserAuth;
 }
 
 const initialState: InitialState = { usersCollection: [], filter: "" };
@@ -14,6 +15,9 @@ const userSlice = createSlice({
                                 reducers: {
                                   updateUsers: (state, action: PayloadAction<User[]>) => {
                                     state.usersCollection = action.payload;
+                                  },
+                                  updateCurrentUserAuth: (state, action: PayloadAction<UserAuth>) => {
+                                    state.currentUser = action.payload;
                                   },
                                   addUser: (state, action: PayloadAction<User>) => {
                                     state.usersCollection.push(action.payload);
@@ -27,5 +31,5 @@ const userSlice = createSlice({
                                 }
                               });
 
-export const { addUser, deleteUser, filterUsers, updateUsers } = userSlice.actions;
+export const { addUser, deleteUser, filterUsers, updateUsers, updateCurrentUserAuth } = userSlice.actions;
 export default userSlice.reducer;

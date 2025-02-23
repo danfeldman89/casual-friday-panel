@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './LoginPage.module.css';
 import { UserAuth } from "../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/login.ts";
+import { useDispatch } from "react-redux";
+import { updateCurrentUserAuth } from "../../store/userSlice.ts";
 
 interface LoginPageProps {}
 
@@ -10,6 +12,7 @@ function LoginPage({}: LoginPageProps) {
   // State variables for username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   function handleLogin() {
@@ -26,12 +29,13 @@ function LoginPage({}: LoginPageProps) {
 
         localStorage.setItem('authToken', data.token);
         alert('Login successful!');
+        dispatch(updateCurrentUserAuth(data));
         navigate('/dashboard');
       })
       .catch(error => {
         console.error('Error during login:', error.message);
         alert(error.message);
-      })
+      });
   }
 
   return (
