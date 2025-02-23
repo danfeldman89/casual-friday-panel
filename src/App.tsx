@@ -10,6 +10,8 @@ import { RootState } from "./store/store.ts";
 import { useSelector } from "react-redux";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
+import BoostersTable from "./components/Boosters/BoostersTable.tsx";
+import ModifyBoosterPage from "./components/Pages/ModifyBoosterPage.tsx";
 
 function App() {
   const currentUser = useSelector((state: RootState) => state.users.currentUser);
@@ -37,16 +39,18 @@ function App() {
 
             <TabPanel value={value} index={1}>
               <ProtectedRoute>
-                <div>Protected content for the second tab</div>
+                <BoostersTable />
               </ProtectedRoute>
             </TabPanel>
           </Box>
         } />
         <Route path="/create-user" element={<ModifyUserPage />} />
         <Route path="/create-role" element={<ModifyRolePage />} />
+        <Route path="/create-booster" element={<ModifyBoosterPage />} />
 
 
         <Route path="/edit-user/:id" element={<ModifyUserPage />} />
+        <Route path="/edit-booster/:id" element={<ModifyBoosterPage />} />
       </Routes>
     </Router>
   );

@@ -31,3 +31,20 @@ export interface User {
   isActive: boolean;
   roleIds: string[];
 }
+
+export interface BoosterResponse {
+  id: string;
+  name: string;
+  description: string;
+  requiredPermissionIds: string[];
+  boosters: Booster[];
+}
+
+export interface Booster {
+  name: string;
+  description: string;
+  type: number;
+  price: number;
+  duration: number;
+  isActive: boolean;
+}
