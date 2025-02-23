@@ -12,6 +12,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import BoostersTable from "./components/Boosters/BoostersTable.tsx";
 import ModifyBoosterPage from "./components/Pages/ModifyBoosterPage.tsx";
+import ModifyPermissionPage from "./components/Pages/ModifyPermissionPage.tsx";
 
 function App() {
   const currentUser = useSelector((state: RootState) => state.users.currentUser);
@@ -46,11 +47,13 @@ function App() {
         } />
         <Route path="/create-user" element={<ModifyUserPage />} />
         <Route path="/create-role" element={<ModifyRolePage />} />
+        <Route path="/create-permission" element={<ModifyPermissionPage />} />
         <Route path="/create-booster" element={<ModifyBoosterPage />} />
 
 
         <Route path="/edit-user/:id" element={<ModifyUserPage />} />
         <Route path="/edit-role/:id" element={<ModifyRolePage />} />
+        <Route path="/edit-permission/:id" element={<ModifyPermissionPage />} />
         <Route path="/edit-booster/:id" element={<ModifyBoosterPage />} />
       </Routes>
     </Router>

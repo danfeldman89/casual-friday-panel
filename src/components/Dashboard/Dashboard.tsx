@@ -12,6 +12,7 @@ import { updateRoles } from "../../store/roleSlice.ts";
 import RolesTable from "./Tables/RolesTable.tsx";
 import { getPermissionsApi } from "../../api/permissions.ts";
 import { updatePermissions } from "../../store/permissionSlice.ts";
+import PermissionsTable from "./Tables/PermissionsTable.tsx";
 
 interface DashboardProps {}
 
@@ -20,6 +21,7 @@ const Dashboard: React.FC<DashboardProps> = () => {
 
   const users = useSelector((state: RootState) => state.users.usersCollection);
   const roles = useSelector((state: RootState) => state.roles.rolesCollection);
+  const permissions = useSelector((state: RootState) => state.permissions.permissionsCollection);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState(0);
@@ -91,9 +93,11 @@ const Dashboard: React.FC<DashboardProps> = () => {
         </TabPanel>
 
         <TabPanel value={selectedTab} index={1}>
-          <TableContainer>
-            <RolesTable roles={roles} />
-          </TableContainer>
+          <RolesTable roles={roles} />
+        </TabPanel>
+
+        <TabPanel value={selectedTab} index={2}>
+          <PermissionsTable permissions={permissions} />
         </TabPanel>
       </Paper>
     </Box>

@@ -9,7 +9,6 @@ import { User } from "../../types/types.tsx"; // Ensure you have a function to f
 
 function ModifyUserPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const roles = useSelector((state: RootState) => state.roles.rolesCollection);
   const users = useSelector((state: RootState) => state.users.usersCollection);
 

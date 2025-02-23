@@ -9,7 +9,6 @@ import { Permission, Role } from "../../types/types";
 
 function ModifyRolePage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const permissions = useSelector((state: RootState) => state.permissions.permissionsCollection);
   const roles = useSelector((state: RootState) => state.roles.rolesCollection);
 

@@ -1,4 +1,4 @@
-import { Alert, Box, Button, CircularProgress, MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, MenuItem, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { Booster, BoosterResponse } from "../../types/types";
@@ -15,13 +15,10 @@ function BoostersTable() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Sort state for selected type
   const [selectedType, setSelectedType] = useState<string>("all");
 
-  // Retrieve boosters from the Redux store
   const boosters = useSelector((state: RootState) => state.boosters.boostersCollection);
 
-  // Fetch boosters on component mount
   useEffect(() => {
     getBoostersApi()
       .then((response) => response.json())
@@ -30,17 +27,14 @@ function BoostersTable() {
       .finally(() => setLoading(false));
   }, [dispatch]);
 
-  // Handle dropdown selection
-  const handleTypeChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedType(event.target.value as string);
+  const handleTypeChange = (event: SelectChangeEvent<string>) => {
+    setSelectedType(event.target.value);
   };
 
-  // Filter boosters based on selected type
   const filteredBoosters = selectedType === "all"
                            ? boosters
                            : boosters.filter((booster) => booster.type.toString() === selectedType);
 
-  // Helper to get unique booster types for the dropdown
   const getUniqueBoosterTypes = (boosters: Booster[]) => {
     const types = new Set<number>(boosters.map((booster) => booster.type));
     return Array.from(types);
@@ -74,7 +68,6 @@ function BoostersTable() {
           Add Booster
         </Button>
 
-        {/* Dropdown to filter boosters by type */}
         <Select
           value={selectedType}
           onChange={handleTypeChange}
@@ -116,7 +109,7 @@ function BoostersTable() {
                    <Button
                      variant="outlined"
                      size="small"
-                     onClick={() => navigate(`/edit-booster/${booster.id}`)}>
+                     onClick={() => navigate(`/edit-booster/${booster}`)}>
                      Edit
                    </Button>
                  </TableCell>
