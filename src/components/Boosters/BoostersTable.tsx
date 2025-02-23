@@ -1,7 +1,7 @@
 import { Alert, Box, Button, CircularProgress, MenuItem, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { Booster, BoosterResponse } from "../../types/types";
+import { Booster, BoosterResponse, isPermitted } from "../../types/types";
 import { useEffect, useState } from "react";
 import { getBoostersApi } from "../../api/boosters";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,10 +14,10 @@ function BoostersTable() {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
   const [selectedType, setSelectedType] = useState<string>("all");
 
   const boosters = useSelector((state: RootState) => state.boosters.boostersCollection);
+  const current = useSelector((state: RootState) => state.users.currentUser);
 
   useEffect(() => {
     getBoostersApi()
@@ -63,8 +63,7 @@ function BoostersTable() {
           startIcon={<Add />}
           variant="contained"
           color="primary"
-          onClick={() => navigate('/create-booster')}
-        >
+          onClick={() => navigate('/create-booster')}>
           Add Booster
         </Button>
 
@@ -105,14 +104,14 @@ function BoostersTable() {
                  <TableCell align="center">${booster.price}</TableCell>
                  <TableCell align="center">{booster.duration} days</TableCell>
                  <TableCell align="center">{booster.isActive ? "Active" : "Inactive"}</TableCell>
-                 <TableCell align="center">
-                   <Button
-                     variant="outlined"
-                     size="small"
-                     onClick={() => navigate(`/edit-booster/${booster}`)}>
-                     Edit
-                   </Button>
-                 </TableCell>
+                 {isPermitted(current, 'Catalogs', 'Write') && <TableCell align="center">
+                     <Button
+                         variant="outlined"
+                         size="small"
+                         onClick={() => navigate(`/edit-booster/${booster}`)}>
+                         Edit
+                     </Button>
+                 </TableCell>}
                </TableRow>
              ))}
            </TableBody>

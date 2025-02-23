@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Box, CircularProgress, Paper, Tab, Tabs, Toolbar, Typography } from "@mui/material";
-import { isPermitted, Permission, Resource, Role, User, UserAuth } from "../../types/types";
+import { Alert, Box, CircularProgress, Paper, Tab, Tabs } from "@mui/material";
+import { isPermitted, Permission, Role, User } from "../../types/types";
 import TabPanel from "../TabPanel/TabPanel.tsx";
 import UsersTable from "./Tables/UsersTable.tsx";
 import { getUsersApi } from "../../api/user.ts";
@@ -76,12 +76,6 @@ const Dashboard: React.FC<DashboardProps> = () => {
   return (
     <Box sx={{ height: "100%" }}>
       <Paper elevation={3} sx={{ height: "100%" }}>
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography variant="h6" component="div">
-            Admin panel
-          </Typography>
-        </Toolbar>
-
         <Tabs value={selectedTab}
               sx={{ margin: "0 2rem" }}
               onChange={(_, num) => setSelectedTab(num)}>

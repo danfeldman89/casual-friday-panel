@@ -19,7 +19,12 @@ function RolesTable({ roles }: RolesTableProps) {
   return (
     <TableContainer>
       <Box sx={{ display: "flex", gap: 1 }}>
-        <Button startIcon={<Add />} onClick={() => navigate('/create-role')} />
+        <Button startIcon={<Add />}
+                variant="contained"
+                color="primary"
+                onClick={() => navigate('/create-role')}>
+          Add role
+        </Button>
       </Box>
       <Table>
         <TableHead>

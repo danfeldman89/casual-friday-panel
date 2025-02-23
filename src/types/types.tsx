@@ -49,6 +49,11 @@ export interface Booster {
   isActive: boolean;
 }
 
+export function isAdmin(userAuth: UserAuth | undefined) {
+  if (!userAuth) return false;
+  return userAuth.roles.includes('Admin');
+}
+
 export function isPermitted(user: UserAuth | undefined,
                             resource: Resource,
                             access: 'Read' | 'Write') {

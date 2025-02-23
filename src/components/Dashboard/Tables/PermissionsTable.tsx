@@ -19,7 +19,12 @@ function PermissionsTable({ permissions }: PermissionsTableProps) {
   return (
     <TableContainer>
       <Box sx={{ display: "flex", gap: 1 }}>
-        <Button startIcon={<Add />} onClick={() => navigate("/create-permission")} />
+        <Button startIcon={<Add />}
+                variant="contained"
+                color="primary"
+                onClick={() => navigate('/create-permission')}>
+          Add permission
+        </Button>
       </Box>
       <Table>
         <TableHead>

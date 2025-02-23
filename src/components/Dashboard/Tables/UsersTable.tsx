@@ -19,7 +19,12 @@ function UsersTable({ users }: UsersTableProps) {
   return (
     <TableContainer>
       <Box sx={{ display: "flex", gap: 1 }}>
-        <Button startIcon={<Add />} onClick={() => navigate('/create-user')} />
+        <Button startIcon={<Add />}
+                variant="contained"
+                color="primary"
+                onClick={() => navigate('/create-user')}>
+          Add user
+        </Button>
       </Box>
       <Table>
         <TableHead>

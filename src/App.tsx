@@ -13,25 +13,29 @@ import { useState } from "react";
 import BoostersTable from "./components/Boosters/BoostersTable.tsx";
 import ModifyBoosterPage from "./components/Pages/ModifyBoosterPage.tsx";
 import ModifyPermissionPage from "./components/Pages/ModifyPermissionPage.tsx";
+import { isAdmin } from "./types/types.tsx";
 
 function App() {
-  const currentUser = useSelector((state: RootState) => state.users.currentUser);
+  const current = useSelector((state: RootState) => state.users.currentUser);
   const handleChange = (_: React.SyntheticEvent, newValue: number) => setValue(newValue);
-  const [value, setValue] = useState(currentUser?.roles.find(role => role === 'Admin') !== undefined ? 0 : 1);
+  const [value, setValue] = useState(0);
 
+  const isAdminFromLocalStorage = localStorage.getItem('isAdmin') === 'true';
+  
   return (
     <Router basename="/">
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={
-          <Box sx={{ display: "flex", flexDirection: "column"/*, height: "100%"*/ }}>
+          <Box sx={{ display: "flex", flexDirection: "column", height: "98%" }}>
             <Tabs value={value} onChange={handleChange} aria-label="Tab Panel Example">
-              <Tab label="Admin panel" />
+              {isAdmin(current) &&
+                <Tab label="Admin panel" />}
               <Tab label="Boosters management" />
             </Tabs>
 
-            {currentUser &&
+            {isAdmin(current) &&
                 <TabPanel value={value} index={0}>
                     <ProtectedRoute>
                         <Dashboard />
