@@ -28,7 +28,7 @@ function LoginPage({}: LoginPageProps) {
         console.log('User authenticated:', data);
 
         localStorage.setItem('authToken', data.token);
-        localStorage.setItem('isAdmin', data.roles.includes('Admin').toString());
+        localStorage.setItem('currentUser', JSON.stringify(data));
         alert('Login successful!');
         dispatch(updateCurrentUserAuth(data));
         navigate('/dashboard');

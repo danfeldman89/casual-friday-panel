@@ -4,8 +4,8 @@ import { isPermitted, Permission, Role } from "../../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
 import { deleteRole } from "../../../store/roleSlice.ts";
 import { deleteRoleApi } from "../../../api/roles.ts";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store/store.ts";
+import { useDispatch } from "react-redux";
+import { useCurrentUser } from "../../../hooks/useCurrentUser.ts";
 
 interface RolesTableProps {
   roles: Role[];
@@ -14,7 +14,7 @@ interface RolesTableProps {
 function RolesTable({ roles }: RolesTableProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const current = useSelector((state: RootState) => state.users.currentUser);
+  const current = useCurrentUser();
 
   return (
     <TableContainer>

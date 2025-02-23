@@ -3,9 +3,9 @@ import { Add } from "@mui/icons-material";
 import { isPermitted, User } from "../../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
 import { deleteUser } from "../../../store/userSlice.ts";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { deleteUserApi } from "../../../api/user.ts";
-import { RootState } from "../../../store/store.ts";
+import { useCurrentUser } from "../../../hooks/useCurrentUser.ts";
 
 interface UsersTableProps {
   users: User[];
@@ -14,7 +14,7 @@ interface UsersTableProps {
 function UsersTable({ users }: UsersTableProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const current = useSelector((state: RootState) => state.users.currentUser);
+  const current = useCurrentUser();
 
   return (
     <TableContainer>

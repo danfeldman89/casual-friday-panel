@@ -7,6 +7,7 @@ import { getBoostersApi } from "../../api/boosters";
 import { useDispatch, useSelector } from "react-redux";
 import { updateBoosters } from "../../store/boosterSlice";
 import { RootState } from "../../store/store";
+import { useCurrentUser } from "../../hooks/useCurrentUser.ts";
 
 function BoostersTable() {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function BoostersTable() {
   const [selectedType, setSelectedType] = useState<string>("all");
 
   const boosters = useSelector((state: RootState) => state.boosters.boostersCollection);
-  const current = useSelector((state: RootState) => state.users.currentUser);
+  const current = useCurrentUser();
 
   useEffect(() => {
     getBoostersApi()

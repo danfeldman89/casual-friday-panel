@@ -2,10 +2,10 @@ import { Badge, Box, Button, Table, TableBody, TableCell, TableContainer, TableH
 import { Add } from "@mui/icons-material";
 import { isPermitted, Permission } from "../../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { deletePermission } from "../../../store/permissionSlice.ts";
 import { deletePermissionApi } from "../../../api/permissions.ts";
-import { RootState } from "../../../store/store.ts";
+import { useCurrentUser } from "../../../hooks/useCurrentUser.ts";
 
 interface PermissionsTableProps {
   permissions: Permission[];
@@ -14,7 +14,7 @@ interface PermissionsTableProps {
 function PermissionsTable({ permissions }: PermissionsTableProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const current = useSelector((state: RootState) => state.users.currentUser);
+  const current = useCurrentUser();
 
   return (
     <TableContainer>

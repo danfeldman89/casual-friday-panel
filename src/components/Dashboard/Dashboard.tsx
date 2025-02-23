@@ -13,13 +13,14 @@ import RolesTable from "./Tables/RolesTable.tsx";
 import { getPermissionsApi } from "../../api/permissions.ts";
 import { updatePermissions } from "../../store/permissionSlice.ts";
 import PermissionsTable from "./Tables/PermissionsTable.tsx";
+import { useCurrentUser } from "../../hooks/useCurrentUser.ts";
 
 interface DashboardProps {}
 
 const Dashboard: React.FC<DashboardProps> = () => {
   const dispatch = useDispatch();
 
-  const current = useSelector((state: RootState) => state.users.currentUser);
+  const current = useCurrentUser();
   const users = useSelector((state: RootState) => state.users.usersCollection);
   const roles = useSelector((state: RootState) => state.roles.rolesCollection);
   const permissions = useSelector((state: RootState) => state.permissions.permissionsCollection);

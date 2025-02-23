@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { Close } from "@mui/icons-material";
 import { createPermissionApi, updatePermissionApi } from "../../api/permissions"; // Assume API functions for permissions
@@ -13,12 +13,12 @@ function ModifyPermissionPage() {
   const { id } = useParams<{ id: string }>(); // Get permission ID from the URL
 
   const [formPermission, setFormPermission] = useState<Permission>({
-    id: "",
-    name: "",
-    resource: "",
-    canRead: false,
-    canWrite: false,
-  });
+                                                                     id: "",
+                                                                     name: "",
+                                                                     resource: "",
+                                                                     canRead: false,
+                                                                     canWrite: false
+                                                                   });
 
   useEffect(() => {
     if (id) {
@@ -31,7 +31,7 @@ function ModifyPermissionPage() {
     const { name, value } = e.target;
     setFormPermission((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -39,7 +39,7 @@ function ModifyPermissionPage() {
     const { name, checked } = e.target;
     setFormPermission((prev) => ({
       ...prev,
-      [name]: checked,
+      [name]: checked
     }));
   };
 
@@ -117,18 +117,18 @@ function ModifyPermissionPage() {
                    margin="normal"
                    required />
         <FormControlLabel control={
-                            <Checkbox
-                              checked={formPermission.canRead}
-                              name="canRead"
-                              onChange={handleCheckboxChange} />
-                          }
+          <Checkbox
+            checked={formPermission.canRead}
+            name="canRead"
+            onChange={handleCheckboxChange} />
+        }
                           label="Can Read" />
         <FormControlLabel control={
-                            <Checkbox
-                              checked={formPermission.canWrite}
-                              name="canWrite"
-                              onChange={handleCheckboxChange} />
-                          }
+          <Checkbox
+            checked={formPermission.canWrite}
+            name="canWrite"
+            onChange={handleCheckboxChange} />
+        }
                           label="Can Write" />
         <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
           {id ? "Update Permission" : "Create Permission"}
