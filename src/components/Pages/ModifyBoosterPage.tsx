@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Close } from "@mui/icons-material";
-import { createBoosterApi } from "../../api/boosters"; // Assuming the API exists
+import { createBoosterApi } from "../../api/boosters";
 import { Booster } from "../../types/types";
 
 function CreateBoosterPage() {
@@ -62,22 +62,20 @@ function CreateBoosterPage() {
       display: "flex",
       flexDirection: "column"
     }}>
-      <Typography
-        variant="h4"
-        sx={{
-          textAlign: "center",
-          mb: 3,
-          color: "var(--app-font-color)",
-          position: "relative"
-        }}>
+      <Typography variant="h4"
+                  sx={{
+                    textAlign: "center",
+                    mb: 3,
+                    color: "var(--app-font-color)",
+                    position: "relative"
+                  }}>
         Create New Booster
         <Button sx={{ position: "absolute", top: 0, right: 0 }} onClick={() => navigate(-1)}>
           <Close />
         </Button>
       </Typography>
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+      <form onSubmit={handleSubmit}
+            style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
         <TextField fullWidth
                    label="Booster Name"
                    name="name"
@@ -102,9 +100,10 @@ function CreateBoosterPage() {
                   value={formBooster.type}
                   onChange={handleChange}
                   label="Booster Type">
-            <MenuItem value={1}>Type 1: Speed</MenuItem>
-            <MenuItem value={2}>Type 2: Strength</MenuItem>
-            <MenuItem value={3}>Type 3: Health</MenuItem>
+            <MenuItem value={1}>Type 1</MenuItem>
+            <MenuItem value={2}>Type 2</MenuItem>
+            <MenuItem value={3}>Type 3</MenuItem>
+            <MenuItem value={4}>Type 4</MenuItem>
           </Select>
         </FormControl>
         <TextField
@@ -115,8 +114,7 @@ function CreateBoosterPage() {
           value={formBooster.price}
           onChange={handleChange}
           margin="normal"
-          required
-        />
+          required />
         <TextField
           type="number"
           fullWidth
@@ -125,8 +123,7 @@ function CreateBoosterPage() {
           value={formBooster.duration}
           onChange={handleChange}
           margin="normal"
-          required
-        />
+          required />
         <FormControlLabel control={
           (<Checkbox
             name="isActive"

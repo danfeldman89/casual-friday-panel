@@ -16,8 +16,16 @@ import { useCurrentUser } from "./hooks/useCurrentUser.ts";
 
 function App() {
   const currentUser = useCurrentUser();
+  const isAdminUser = isAdmin(currentUser);
+
+  const tabConfig = [
+    ...(isAdminUser ? [{ label: "Admin panel", index: 0 }] : []),
+    { label: "Boosters management", index: isAdminUser ? 1 : 0 }
+  ];
+
+  const [value, setValue] = useState(0);
+
   const handleChange = (_: React.SyntheticEvent, newValue: number) => setValue(newValue);
-  const [value, setValue] = useState(isAdmin(currentUser) ? 0 : 1);
 
   return (
     <Router basename="/">
@@ -25,21 +33,22 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={
-          <Box sx={{ display: "flex", flexDirection: "column", height: "98%" }}>
-            <Tabs value={value} onChange={handleChange} aria-label="Tab Panel Example">
-              {isAdmin(currentUser) &&
-                  <Tab label="Admin panel" />}
-              <Tab label="Boosters management" />
+          <Box sx={{ display: "flex", flexDirection: "column", height: "98%", padding:"0px" }}>
+            <Tabs value={value} onChange={handleChange} aria-label="Conditional Tabs Example">
+              {tabConfig.map((tab) => (
+                <Tab key={tab.index} label={tab.label} sx={{ outline: "none", "&:focus": { outline: "none" } }} />
+              ))}
             </Tabs>
 
-            {isAdmin(currentUser) &&
-                <TabPanel value={value} index={0}>
-                    <ProtectedRoute>
-                        <Dashboard />
-                    </ProtectedRoute>
-                </TabPanel>}
+            {isAdminUser && (
+              <TabPanel value={value} index={0}>
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              </TabPanel>
+            )}
 
-            <TabPanel value={value} index={1}>
+            <TabPanel value={value} index={isAdminUser ? 1 : 0}>
               <ProtectedRoute>
                 <BoostersTable />
               </ProtectedRoute>
@@ -50,8 +59,6 @@ function App() {
         <Route path="/create-role" element={<ModifyRolePage />} />
         <Route path="/create-permission" element={<ModifyPermissionPage />} />
         <Route path="/create-booster" element={<ModifyBoosterPage />} />
-
-
         <Route path="/edit-user/:id" element={<ModifyUserPage />} />
         <Route path="/edit-role/:id" element={<ModifyRolePage />} />
         <Route path="/edit-permission/:id" element={<ModifyPermissionPage />} />

@@ -18,7 +18,7 @@ function RolesTable({ roles }: RolesTableProps) {
 
   return (
     <TableContainer>
-      <Box sx={{ display: "flex", gap: 1 }}>
+      <Box sx={{ display: "flex", gap: 1, padding: "0 2rem" }}>
         <Button startIcon={<Add />}
                 variant="contained"
                 color="primary"

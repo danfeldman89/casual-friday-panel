@@ -59,7 +59,7 @@ function BoostersTable() {
 
   return (
     <TableContainer>
-      <Box sx={{ display: "flex", gap: 2, marginBottom: 2, alignItems: "center" }}>
+      <Box sx={{ display: "flex", gap: 2, marginBottom: 2, alignItems: "center", padding: "0 2rem" }}>
         <Button
           startIcon={<Add />}
           variant="contained"

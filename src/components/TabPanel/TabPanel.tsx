@@ -13,9 +13,9 @@ const TabPanel: React.FC<TabPanelProps> = ({ children, value, index }) => {
          hidden={value !== index}
          id={`tabpanel-${index}`}
          aria-labelledby={`tab-${index}`}
-         sx={{ height: "100%" }}>
+         sx={{ height: "100%", padding: "0px" }}>
       {value === index && (
-        <Box sx={{ p: 3, height: "100%" }}>
+        <Box sx={{ p: 3, height: "100%", padding: "1rem 0" }}>
           {children}
         </Box>
       )}

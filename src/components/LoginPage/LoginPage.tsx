@@ -9,7 +9,6 @@ import { updateCurrentUserAuth } from "../../store/userSlice.ts";
 interface LoginPageProps {}
 
 function LoginPage({}: LoginPageProps) {
-  // State variables for username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -25,8 +24,6 @@ function LoginPage({}: LoginPageProps) {
 
     login(loginPayload)
       .then((data: UserAuth) => {
-        console.log('User authenticated:', data);
-
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('currentUser', JSON.stringify(data));
         alert('Login successful!');
@@ -34,7 +31,6 @@ function LoginPage({}: LoginPageProps) {
         navigate('/dashboard');
       })
       .catch(error => {
-        console.error('Error during login:', error.message);
         alert(error.message);
       });
   }
@@ -48,7 +44,6 @@ function LoginPage({}: LoginPageProps) {
           handleLogin();
         }}>
         <div className={styles.inputGroup}>
-          <label htmlFor="username">Username</label>
           <input type="text"
                  id="username"
                  name="username"
@@ -59,7 +54,6 @@ function LoginPage({}: LoginPageProps) {
                  required />
         </div>
         <div className={styles.inputGroup}>
-          <label htmlFor="password">Password</label>
           <input type="password"
                  id="password"
                  name="password"
