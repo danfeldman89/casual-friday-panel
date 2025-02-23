@@ -1,10 +1,11 @@
 import { Badge, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { User } from "../../../types/types.tsx";
+import { isPermitted, User } from "../../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
 import { deleteUser } from "../../../store/userSlice.ts";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteUserApi } from "../../../api/user.ts";
+import { RootState } from "../../../store/store.ts";
 
 interface UsersTableProps {
   users: User[];
@@ -13,6 +14,7 @@ interface UsersTableProps {
 function UsersTable({ users }: UsersTableProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const current = useSelector((state: RootState) => state.users.currentUser);
 
   return (
     <TableContainer>
@@ -59,23 +61,24 @@ function UsersTable({ users }: UsersTableProps) {
                 />
               </Tooltip>
             </TableCell>
-            <TableCell align="center">
-              <Button variant="outlined"
-                      size="small"
-                      sx={{ margin: "0 0.5rem" }}
-                      onClick={() => navigate(`/edit-user/${user.id}`)}>
-                Edit
-              </Button>
-              <Button variant="outlined"
-                      size="small"
-                      sx={{ margin: "0 0.5rem" }}
-                      onClick={() => {
-                        dispatch(deleteUser(user.id));
-                        deleteUserApi(user.id);
-                      }}>
-                Delete
-              </Button>
-            </TableCell>
+            {isPermitted(current, 'Users', 'Write') &&
+                <TableCell align="center">
+                    <Button variant="outlined"
+                            size="small"
+                            sx={{ margin: "0 0.5rem" }}
+                            onClick={() => navigate(`/edit-user/${user.id}`)}>
+                        Edit
+                    </Button>
+                    <Button variant="outlined"
+                            size="small"
+                            sx={{ margin: "0 0.5rem" }}
+                            onClick={() => {
+                              dispatch(deleteUser(user.id));
+                              deleteUserApi(user.id);
+                            }}>
+                        Delete
+                    </Button>
+                </TableCell>}
           </TableRow>)}
         </TableBody>
       </Table>

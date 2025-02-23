@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Box, CircularProgress, Paper, Tab, TableContainer, Tabs, Toolbar, Typography } from "@mui/material";
-import { Permission, Role, User } from "../../types/types";
+import { Alert, Box, CircularProgress, Paper, Tab, Tabs, Toolbar, Typography } from "@mui/material";
+import { isPermitted, Permission, Resource, Role, User, UserAuth } from "../../types/types";
 import TabPanel from "../TabPanel/TabPanel.tsx";
 import UsersTable from "./Tables/UsersTable.tsx";
 import { getUsersApi } from "../../api/user.ts";
@@ -19,6 +19,7 @@ interface DashboardProps {}
 const Dashboard: React.FC<DashboardProps> = () => {
   const dispatch = useDispatch();
 
+  const current = useSelector((state: RootState) => state.users.currentUser);
   const users = useSelector((state: RootState) => state.users.usersCollection);
   const roles = useSelector((state: RootState) => state.roles.rolesCollection);
   const permissions = useSelector((state: RootState) => state.permissions.permissionsCollection);
@@ -84,9 +85,9 @@ const Dashboard: React.FC<DashboardProps> = () => {
         <Tabs value={selectedTab}
               sx={{ margin: "0 2rem" }}
               onChange={(_, num) => setSelectedTab(num)}>
-          <Tab label="Users" sx={{ outline: "none", "&:focus": { outline: "none" } }} />
-          <Tab label="Roles" sx={{ outline: "none", "&:focus": { outline: "none" } }} />
-          <Tab label="Permissions" sx={{ outline: "none", "&:focus": { outline: "none" } }} />
+          {isPermitted(current, 'Users', 'Read') && <Tab label="Users" sx={{ outline: "none", "&:focus": { outline: "none" } }} />}
+          {isPermitted(current, 'Roles', 'Read') && <Tab label="Roles" sx={{ outline: "none", "&:focus": { outline: "none" } }} />}
+          {isPermitted(current, 'Permissions', 'Read') && <Tab label="Permissions" sx={{ outline: "none", "&:focus": { outline: "none" } }} />}
         </Tabs>
         <TabPanel value={selectedTab} index={0}>
           <UsersTable users={users} />

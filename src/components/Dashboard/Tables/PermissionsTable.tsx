@@ -1,10 +1,11 @@
 import { Badge, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { Permission } from "../../../types/types.tsx";
+import { isPermitted, Permission } from "../../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deletePermission } from "../../../store/permissionSlice.ts";
 import { deletePermissionApi } from "../../../api/permissions.ts";
+import { RootState } from "../../../store/store.ts";
 
 interface PermissionsTableProps {
   permissions: Permission[];
@@ -13,6 +14,7 @@ interface PermissionsTableProps {
 function PermissionsTable({ permissions }: PermissionsTableProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const current = useSelector((state: RootState) => state.users.currentUser);
 
   return (
     <TableContainer>
@@ -46,24 +48,25 @@ function PermissionsTable({ permissions }: PermissionsTableProps) {
                          }
                        }} />
               </TableCell>
-              <TableCell align="center">
-                <Button variant="outlined"
-                        size="small"
-                        sx={{ margin: "0 0.5rem" }}
-                        onClick={() => navigate(`/edit-permission/${permission.id}`)}
-                >
-                  Edit
-                </Button>
-                <Button variant="outlined"
-                        size="small"
-                        sx={{ margin: "0 0.5rem" }}
-                        onClick={() => {
-                          dispatch(deletePermission(permission.id));
-                          deletePermissionApi(permission.id);
-                        }}>
-                  Delete
-                </Button>
-              </TableCell>
+              {isPermitted(current, 'Permissions', 'Write') &&
+                  <TableCell align="center">
+                      <Button variant="outlined"
+                              size="small"
+                              sx={{ margin: "0 0.5rem" }}
+                              onClick={() => navigate(`/edit-permission/${permission.id}`)}
+                      >
+                          Edit
+                      </Button>
+                      <Button variant="outlined"
+                              size="small"
+                              sx={{ margin: "0 0.5rem" }}
+                              onClick={() => {
+                                dispatch(deletePermission(permission.id));
+                                deletePermissionApi(permission.id);
+                              }}>
+                          Delete
+                      </Button>
+                  </TableCell>}
             </TableRow>
           ))}
         </TableBody>

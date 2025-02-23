@@ -48,3 +48,16 @@ export interface Booster {
   duration: number;
   isActive: boolean;
 }
+
+export function isPermitted(user: UserAuth | undefined,
+                            resource: Resource,
+                            access: 'Read' | 'Write') {
+  if (user == null) return false;
+
+  return user.permissions?.some((w: Permission) =>
+                                  w.resource === resource &&
+                                  (access === 'Read' ? w.canRead : w.canWrite)
+  );
+}
+
+export type Resource = 'Users' | 'Roles' | 'Permissions' | 'Catalogs';
