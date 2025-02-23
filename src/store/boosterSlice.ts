@@ -1,21 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Booster, BoosterResponse } from "../types/types";
+import { Booster, BoosterCatalog } from "../types/types";
 
 interface InitialState {
   boostersCollection: Booster[];
   boostersIndex?: string,
+  boosterCatalogs: BoosterCatalog[],
   filter: string;
 }
 
-const initialState: InitialState = { boostersCollection: [], filter: "" };
+const initialState: InitialState = { boostersCollection: [], filter: "", boosterCatalogs: [] };
 
 const boostersSlice = createSlice({
                                     name: "boosters",
                                     initialState,
                                     reducers: {
-                                      updateBoosters: (state, action: PayloadAction<BoosterResponse[]>) => {
+                                      updateBoosters: (state, action: PayloadAction<BoosterCatalog[]>) => {
                                         state.boostersCollection = action.payload[0].boosters;
                                         state.boostersIndex = action.payload[0].id;
+                                        state.boosterCatalogs = action.payload;
                                       },
                                       addBooster: (state, action: PayloadAction<Booster>) => {
                                         state.boostersCollection.push(action.payload);
@@ -27,8 +29,8 @@ const boostersSlice = createSlice({
                                       },
                                       filterBoosters: (state, action: PayloadAction<string>) => {
                                         state.filter = action.payload;
-                                      },
-                                    },
+                                      }
+                                    }
                                   });
 
 export const { updateBoosters, addBooster, deleteBooster, filterBoosters } = boostersSlice.actions;

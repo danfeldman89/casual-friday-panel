@@ -4,13 +4,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { Close } from "@mui/icons-material";
-import { createPermissionApi, updatePermissionApi } from "../../api/permissions"; // Assume API functions for permissions
+import { createPermissionApi, updatePermissionApi } from "../../api/permissions";
 import { Permission } from "../../types/types";
 
 function ModifyPermissionPage() {
   const navigate = useNavigate();
-  const permissions = useSelector((state: RootState) => state.permissions.permissionsCollection); // Redux state
-  const { id } = useParams<{ id: string }>(); // Get permission ID from the URL
+  const permissions = useSelector((state: RootState) => state.permissions.permissionsCollection);
+  const { id } = useParams<{ id: string }>();
 
   const [formPermission, setFormPermission] = useState<Permission>({
                                                                      id: "",

@@ -1,6 +1,6 @@
 import { User } from "../types/types.tsx";
 
-const BASE_URL_USERS = "http://localhost:200/api/users"; // Replace with your actual API base URL
+const BASE_URL_USERS = "http://localhost:200/api/users";
 
 export async function getUsersApi(): Promise<Response> {
   const url = `${BASE_URL_USERS}`;

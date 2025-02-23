@@ -79,9 +79,15 @@ const Dashboard: React.FC<DashboardProps> = () => {
       <Tabs value={selectedTab}
             sx={{ margin: "0 2rem" }}
             onChange={(_, num) => setSelectedTab(num)}>
-        {isPermitted(current, 'Users', 'Read') && <Tab label="Users" sx={{ outline: "none", "&:focus": { outline: "none" } }} />}
-        {isPermitted(current, 'Roles', 'Read') && <Tab label="Roles" sx={{ outline: "none", "&:focus": { outline: "none" } }} />}
-        {isPermitted(current, 'Permissions', 'Read') && <Tab label="Permissions" sx={{ outline: "none", "&:focus": { outline: "none" } }} />}
+        <Tab label="Users"
+             disabled={!isPermitted(current, 'Users', 'Read')}
+             sx={{ outline: "none", "&:focus": { outline: "none" } }} />
+        <Tab label="Roles"
+             disabled={!isPermitted(current, 'Roles', 'Read')}
+             sx={{ outline: "none", "&:focus": { outline: "none" } }} />
+        <Tab label="Permissions"
+             disabled={!isPermitted(current, 'Permissions', 'Read')}
+             sx={{ outline: "none", "&:focus": { outline: "none" } }} />
       </Tabs>
       <TabPanel value={selectedTab} index={0}>
         <UsersTable users={users} />

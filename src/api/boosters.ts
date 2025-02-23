@@ -16,17 +16,6 @@ export async function getBoostersApi(): Promise<Response> {
   });
 }
 
-export async function getBoosterByIdApi(boosterId: string): Promise<Response> {
-  const url = `${BASE_URL_BOOSTERS}/${boosterId}`;
-  return fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${getAuthToken()}`
-    }
-  });
-}
-
 export async function createBoosterApi(booster: Booster, catalogId: string | undefined): Promise<Response> {
   if (!catalogId) {
     throw new Error("Index is required to create a booster.");
@@ -42,8 +31,10 @@ export async function createBoosterApi(booster: Booster, catalogId: string | und
   });
 }
 
-export async function updateBoosterApi(booster: Booster, index: number): Promise<Response> {
-  const url = `${BASE_URL_BOOSTERS}/${boosterId}`;
+export async function updateBoosterApi(boosterIndex: string | undefined,
+                                       catalogId: string | undefined,
+                                       booster: Booster): Promise<Response> {
+  const url = `${BASE_URL_BOOSTERS}/${catalogId}/boosters/${boosterIndex}`;
   return fetch(url, {
     method: "PUT",
     headers: {
@@ -54,7 +45,6 @@ export async function updateBoosterApi(booster: Booster, index: number): Promise
   });
 }
 
-//TODO
 export async function deleteBoosterApi(boosterIndex: string | undefined,
                                        catalogId: string | undefined): Promise<Response> {
   if (!boosterIndex || !catalogId) throw new Error("boosterIndex and catalogId are required to delete a booster.");

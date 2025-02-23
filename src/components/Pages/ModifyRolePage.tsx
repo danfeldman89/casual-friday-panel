@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { Close } from "@mui/icons-material";
-import { createRoleApi, updateRoleApi } from "../../api/roles"; // Fetch & update API should be implemented
+import { createRoleApi, updateRoleApi } from "../../api/roles";
 import { Permission, Role } from "../../types/types";
 
 function ModifyRolePage() {
@@ -12,7 +12,7 @@ function ModifyRolePage() {
   const permissions = useSelector((state: RootState) => state.permissions.permissionsCollection);
   const roles = useSelector((state: RootState) => state.roles.rolesCollection);
 
-  const { id } = useParams<{ id: string }>(); // Get role ID from the URL
+  const { id } = useParams<{ id: string }>();
 
   const [formRole, setFormRole] = useState({
                                              name: "",

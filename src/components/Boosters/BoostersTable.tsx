@@ -1,13 +1,12 @@
 import { Alert, Box, Button, CircularProgress, MenuItem, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { Booster, BoosterResponse, isPermitted } from "../../types/types";
+import { Booster, BoosterCatalog } from "../../types/types";
 import { useEffect, useState } from "react";
 import { deleteBoosterApi, getBoostersApi } from "../../api/boosters";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteBooster, updateBoosters } from "../../store/boosterSlice";
 import { RootState } from "../../store/store";
-import { useCurrentUser } from "../../hooks/useCurrentUser.ts";
 
 function BoostersTable() {
   const dispatch = useDispatch();
@@ -16,25 +15,42 @@ function BoostersTable() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedType, setSelectedType] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const boosters = useSelector((state: RootState) => state.boosters);
-  const current = useCurrentUser();
+
+  const [filteredBoosters, setFilteredBoosters] = useState<Booster[]>([]);
 
   useEffect(() => {
     getBoostersApi()
       .then((response) => response.json())
-      .then((boosters: BoosterResponse[]) => dispatch(updateBoosters(boosters)))
+      .then((boosters: BoosterCatalog[]) =>
+              dispatch(updateBoosters(boosters))
+      )
       .catch((err: any) => setError(err.message))
       .finally(() => setLoading(false));
   }, [dispatch]);
 
-  const handleTypeChange = (event: SelectChangeEvent<string>) => {
+  const handleTypeChange = (event: SelectChangeEvent) => {
     setSelectedType(event.target.value);
   };
 
-  const filteredBoosters = selectedType === "all"
-                           ? boosters.boostersCollection
-                           : boosters.boostersCollection.filter((booster) => booster.type.toString() === selectedType);
+  useEffect(() => {
+    const filtered = boosters.boostersCollection.filter((booster) => {
+      const matchesType =
+        selectedType === "all" || booster.type.toString() === selectedType;
+
+      const matchesSearch =
+        booster.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        booster.description
+               .toLowerCase()
+               .includes(searchQuery.toLowerCase());
+
+      return matchesType && matchesSearch;
+    });
+
+    setFilteredBoosters(filtered);
+  }, [selectedType, searchQuery, boosters.boostersCollection]);
 
   const getUniqueBoosterTypes = (boosters: Booster[]) => {
     const types = new Set<number>(boosters.map((booster) => booster.type));
@@ -43,7 +59,10 @@ function BoostersTable() {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box display="flex"
+           justifyContent="center"
+           alignItems="center"
+           height="100vh">
         <CircularProgress />
       </Box>
     );
@@ -59,42 +78,67 @@ function BoostersTable() {
 
   return (
     <TableContainer>
-      <Box sx={{ display: "flex", gap: 2, marginBottom: 2, alignItems: "center", padding: "0 2rem" }}>
-        <Button
-          startIcon={<Add />}
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/create-booster')}>
+      <Box sx={{
+        display: "flex",
+        gap: 2,
+        marginBottom: 2,
+        alignItems: "center",
+        padding: "0 2rem"
+      }}>
+        <Button startIcon={<Add />}
+                variant="contained"
+                color="primary"
+                onClick={() => navigate("/create-booster")}>
           Add Booster
         </Button>
 
-        <Select
-          value={selectedType}
-          onChange={handleTypeChange}
-          displayEmpty
-          variant="outlined"
-          size="small">
+        <Select value={selectedType}
+                onChange={handleTypeChange}
+                displayEmpty
+                variant="outlined"
+                size="small" sx={{ width: "200px", textAlign: "left" }}>
           <MenuItem value="all">All Types</MenuItem>
           {getUniqueBoosterTypes(boosters.boostersCollection).map((type) => (
-            <MenuItem key={type} value={type.toString()}>Type {type}</MenuItem>
+            <MenuItem key={type} value={type.toString()}>
+              Type {type}
+            </MenuItem>
           ))}
         </Select>
+
+        <Box sx={{
+          display: "flex",
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "space-between"
+        }}
+        >
+          <input type="text"
+                 placeholder="Search boosters..."
+                 style={{
+                   padding: "8px",
+                   fontSize: "14px",
+                   border: "1px solid #ccc",
+                   borderRadius: "4px",
+                   width: "100%",
+                   maxWidth: "300px",
+                   marginRight: "1rem"
+                 }}
+                 onChange={(e) => setSearchQuery(e.target.value)} />
+        </Box>
       </Box>
 
       {filteredBoosters.length === 0 ? (
-        <Typography variant="h6" align="center">
-          No boosters found for the selected type.
+        <Typography sx={{ padding: "1rem" }} variant="subtitle1">
+          No boosters found.
         </Typography>
       ) : (
          <Table>
            <TableHead>
              <TableRow>
-               <TableCell>Booster Name</TableCell>
+               <TableCell>Name</TableCell>
                <TableCell>Description</TableCell>
-               <TableCell align="center">Price</TableCell>
-               <TableCell align="center">Duration</TableCell>
-               <TableCell align="center">Status</TableCell>
-               <TableCell align="center"></TableCell>
+               <TableCell>Type</TableCell>
+               <TableCell>Actions</TableCell>
              </TableRow>
            </TableHead>
            <TableBody>
@@ -102,27 +146,19 @@ function BoostersTable() {
                <TableRow key={booster.name}>
                  <TableCell>{booster.name}</TableCell>
                  <TableCell>{booster.description}</TableCell>
-                 <TableCell align="center">${booster.price}</TableCell>
-                 <TableCell align="center">{booster.duration} days</TableCell>
-                 <TableCell align="center">{booster.isActive ? "Active" : "Inactive"}</TableCell>
-                 {isPermitted(current, 'Catalogs', 'Write') && <TableCell align="center">
-                     <Button sx={{ margin: "0 0.5rem" }}
-                             variant="outlined"
-                             size="small"
-                             onClick={() => navigate(`/edit-booster/${booster}`)}>
-                         Edit
-                     </Button>
-                     <Button sx={{ margin: "0 0.5rem" }}
-                             variant="outlined"
-                             size="small"
-                             onClick={() => {
-                               const boosterIndex = boosters.boostersCollection.findIndex((boosterInCatalog) => boosterInCatalog.name === booster.name);
-                               dispatch(deleteBooster(booster.name));
-                               deleteBoosterApi(boosterIndex.toString(), boosters.boostersIndex);
-                             }}>
-                         Delete
-                     </Button>
-                 </TableCell>}
+                 <TableCell>{booster.type}</TableCell>
+                 <TableCell>
+                   <Button
+                     size="small"
+                     color="primary"
+                     onClick={() => {
+                       const boosterIndex = boosters.boostersCollection.findIndex((boosterInCatalog) => boosterInCatalog.name === booster.name);
+                       dispatch(deleteBooster(booster.name));
+                       deleteBoosterApi(boosterIndex.toString(), boosters.boostersIndex);
+                     }}>
+                     Delete
+                   </Button>
+                 </TableCell>
                </TableRow>
              ))}
            </TableBody>

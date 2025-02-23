@@ -1,11 +1,12 @@
 import { Badge, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { isPermitted, User } from "../../../types/types.tsx";
+import { isPermitted, Role, User } from "../../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
 import { deleteUser } from "../../../store/userSlice.ts";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteUserApi } from "../../../api/user.ts";
 import { useCurrentUser } from "../../../hooks/useCurrentUser.ts";
+import { RootState } from "../../../store/store.ts";
 
 interface UsersTableProps {
   users: User[];
@@ -15,6 +16,20 @@ function UsersTable({ users }: UsersTableProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const current = useCurrentUser();
+  const roles = useSelector((state: RootState) => state.roles.rolesCollection);
+
+  function getUserRoles(user: User) {
+    const userRoles: Role[] = [];
+
+    user.roleIds.forEach((roleId) => {
+      const role = roles.find((role) => role.id === roleId);
+      if (role) {
+        userRoles.push(role);
+      }
+    });
+
+    return userRoles;
+  }
 
   return (
     <TableContainer>
@@ -47,7 +62,10 @@ function UsersTable({ users }: UsersTableProps) {
                 title={
                   <Box>
                     <div>User Roles:</div>
-                    <ul>{user.roleIds.map((role: string) => <li key={role}>{role}</li>)}</ul>
+                    <ul>{getUserRoles(user).map(value => (
+                      <li>
+                        {value.name}
+                      </li>))}</ul>
                   </Box>
                 }>
 
