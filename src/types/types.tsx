@@ -8,7 +8,7 @@ export interface Permission {
 }
 
 export interface Role {
-  id: string; // Unique identifier for the role
+  id?: string; // Unique identifier for the role
   name: string; // Name of the role
   description: string; // Description of the role
   permissions: Permission[]; // List of permissions assigned to the role

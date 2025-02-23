@@ -6,7 +6,7 @@ function getAuthToken(): string | null {
   return localStorage.getItem("authToken");
 }
 
-export async function getPermissions(): Promise<Response> {
+export async function getPermissionsApi(): Promise<Response> {
   const token = getAuthToken();
   return fetch(BASE_URL_PERMISSIONS, {
     method: "GET",
@@ -17,7 +17,7 @@ export async function getPermissions(): Promise<Response> {
   });
 }
 
-export async function getPermissionById(permissionId: string): Promise<Response> {
+export async function getPermissionByIdApi(permissionId: string): Promise<Response> {
   const token = getAuthToken();
   const url = `${BASE_URL_PERMISSIONS}/${permissionId}`;
   return fetch(url, {
@@ -29,7 +29,7 @@ export async function getPermissionById(permissionId: string): Promise<Response>
   });
 }
 
-export async function createPermission(permission: Permission): Promise<Response> {
+export async function createPermissionApi(permission: Permission): Promise<Response> {
   const token = getAuthToken();
   return fetch(BASE_URL_PERMISSIONS, {
     method: "POST",
@@ -41,7 +41,7 @@ export async function createPermission(permission: Permission): Promise<Response
   });
 }
 
-export async function updatePermission(
+export async function updatePermissionApi(
   permissionId: string,
   updatedData: Permission): Promise<Response> {
   const token = getAuthToken();
@@ -56,7 +56,7 @@ export async function updatePermission(
   });
 }
 
-export async function deletePermission(permissionId: string): Promise<Response> {
+export async function deletePermissionApi(permissionId: string): Promise<Response> {
   const token = getAuthToken();
   const url = `${BASE_URL_PERMISSIONS}/${permissionId}`;
   return fetch(url, {

@@ -3,14 +3,14 @@ import { Alert, Box, CircularProgress, Paper, Tab, TableContainer, Tabs, Toolbar
 import { Permission, Role, User } from "../../types/types";
 import TabPanel from "../TabPanel/TabPanel.tsx";
 import UsersTable from "./Tables/UsersTable.tsx";
-import { getUsers } from "../../api/user.ts";
-import { getRoles } from "../../api/roles.ts";
+import { getUsersApi } from "../../api/user.ts";
+import { getRolesApi } from "../../api/roles.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUsers } from "../../store/userSlice.ts";
 import { RootState } from "../../store/store.ts";
 import { updateRoles } from "../../store/roleSlice.ts";
 import RolesTable from "./Tables/RolesTable.tsx";
-import { getPermissions } from "../../api/permissions.ts";
+import { getPermissionsApi } from "../../api/permissions.ts";
 import { updatePermissions } from "../../store/permissionSlice.ts";
 
 interface DashboardProps {}
@@ -32,19 +32,19 @@ const Dashboard: React.FC<DashboardProps> = () => {
       return;
     }
 
-    getUsers()
+    getUsersApi()
       .then((response) => response.json())
       .then((users: User[]) => dispatch(updateUsers(users)))
       .catch((err: any) => setError(err.message))
       .finally(() => setLoading(false));
 
-    getRoles()
+    getRolesApi()
       .then((response) => response.json())
       .then((roles: Role[]) => dispatch(updateRoles(roles)))
       .catch((err: any) => setError(err.message))
       .finally(() => setLoading(false));
 
-    getPermissions()
+    getPermissionsApi()
       .then((response) => response.json())
       .then((permissions: Permission[]) => dispatch(updatePermissions(permissions)))
       .catch((err: any) => setError(err.message))

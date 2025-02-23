@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Close } from "@mui/icons-material";
-import { createBooster } from "../../api/boosters"; // Assuming the API exists
+import { createBoosterApi } from "../../api/boosters"; // Assuming the API exists
 import { Booster } from "../../types/types";
 
 function CreateBoosterPage() {
@@ -35,7 +35,7 @@ function CreateBoosterPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    createBooster(formBooster)
+    createBoosterApi(formBooster)
       .then((response) => {
         if (response.ok) {
           alert("Booster created successfully!");

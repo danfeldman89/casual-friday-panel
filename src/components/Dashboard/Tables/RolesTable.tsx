@@ -2,6 +2,9 @@ import { Badge, Box, Button, Table, TableBody, TableCell, TableContainer, TableH
 import { Add } from "@mui/icons-material";
 import { Permission, Role } from "../../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
+import { deleteRole } from "../../../store/roleSlice.ts";
+import { deleteRoleApi } from "../../../api/roles.ts";
+import { useDispatch } from "react-redux";
 
 interface RolesTableProps {
   roles: Role[];
@@ -9,6 +12,7 @@ interface RolesTableProps {
 
 function RolesTable({ roles }: RolesTableProps) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   return (
     <TableContainer>
@@ -21,6 +25,7 @@ function RolesTable({ roles }: RolesTableProps) {
             <TableCell>Rolename</TableCell>
             <TableCell>Description</TableCell>
             <TableCell align="center">Permissions</TableCell>
+            <TableCell align="center"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,6 +55,23 @@ function RolesTable({ roles }: RolesTableProps) {
                   }}
                 />
               </Tooltip>
+            </TableCell>
+            <TableCell align="center">
+              <Button variant="outlined"
+                      size="small"
+                      sx={{ margin: "0 0.5rem" }}
+                      onClick={() => navigate(`/edit-role/${role.id}`)}>
+                Edit
+              </Button>
+              <Button variant="outlined"
+                      size="small"
+                      sx={{ margin: "0 0.5rem" }}
+                      onClick={() => {
+                        dispatch(deleteRole(role.id));
+                        deleteRoleApi(role.id);
+                      }}>
+                Delete
+              </Button>
             </TableCell>
 
           </TableRow>)}

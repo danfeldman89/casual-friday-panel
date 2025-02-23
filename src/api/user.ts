@@ -2,7 +2,7 @@ import { User } from "../types/types.tsx";
 
 const BASE_URL_USERS = "http://localhost:200/api/users"; // Replace with your actual API base URL
 
-export async function getUsers(): Promise<Response> {
+export async function getUsersApi(): Promise<Response> {
   const url = `${BASE_URL_USERS}`;
   const token = localStorage.getItem("authToken");
 
@@ -15,7 +15,7 @@ export async function getUsers(): Promise<Response> {
   });
 }
 
-export async function getUserById(userId: string): Promise<Response> {
+export async function getUserByIdApi(userId: string): Promise<Response> {
   const url = `${BASE_URL_USERS}/${userId}`;
   const token = localStorage.getItem("authToken");
 
@@ -28,7 +28,7 @@ export async function getUserById(userId: string): Promise<Response> {
   });
 }
 
-export async function createUser(user: User): Promise<Response> {
+export async function createUserApi(user: User): Promise<Response> {
   const token = localStorage.getItem("authToken");
 
   return fetch(BASE_URL_USERS, {
@@ -41,7 +41,7 @@ export async function createUser(user: User): Promise<Response> {
   });
 }
 
-export async function updateUser(user: User): Promise<Response> {
+export async function updateUserApi(user: User): Promise<Response> {
   const url = `${BASE_URL_USERS}/${user.id}`;
   const token = localStorage.getItem("authToken");
 
@@ -55,7 +55,7 @@ export async function updateUser(user: User): Promise<Response> {
   });
 }
 
-export async function deleteUser(userId: string): Promise<Response> {
+export async function deleteUserApi(userId: string): Promise<Response> {
   const url = `${BASE_URL_USERS}/${userId}`;
   const token = localStorage.getItem("authToken");
 

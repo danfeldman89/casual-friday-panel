@@ -2,6 +2,9 @@ import { Badge, Box, Button, Table, TableBody, TableCell, TableContainer, TableH
 import { Add } from "@mui/icons-material";
 import { User } from "../../../types/types.tsx";
 import { useNavigate } from "react-router-dom";
+import { deleteUser } from "../../../store/userSlice.ts";
+import { useDispatch } from "react-redux";
+import { deleteUserApi } from "../../../api/user.ts";
 
 interface UsersTableProps {
   users: User[];
@@ -9,7 +12,8 @@ interface UsersTableProps {
 
 function UsersTable({ users }: UsersTableProps) {
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch();
+
   return (
     <TableContainer>
       <Box sx={{ display: "flex", gap: 1 }}>
@@ -56,17 +60,26 @@ function UsersTable({ users }: UsersTableProps) {
               </Tooltip>
             </TableCell>
             <TableCell align="center">
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => navigate(`/edit-user/${user.id}`)}>
+              <Button variant="outlined"
+                      size="small"
+                      sx={{ margin: "0 0.5rem" }}
+                      onClick={() => navigate(`/edit-user/${user.id}`)}>
                 Edit
+              </Button>
+              <Button variant="outlined"
+                      size="small"
+                      sx={{ margin: "0 0.5rem" }}
+                      onClick={() => {
+                        dispatch(deleteUser(user.id));
+                        deleteUserApi(user.id);
+                      }}>
+                Delete
               </Button>
             </TableCell>
           </TableRow>)}
         </TableBody>
       </Table>
-    </TableContainer>  );
-};
+    </TableContainer>);
+}
 
 export default UsersTable;

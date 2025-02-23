@@ -3,7 +3,7 @@ import { Add } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { Booster, BoosterResponse } from "../../types/types";
 import { useEffect, useState } from "react";
-import { getBoosters } from "../../api/boosters";
+import { getBoostersApi } from "../../api/boosters";
 import { useDispatch, useSelector } from "react-redux";
 import { updateBoosters } from "../../store/boosterSlice";
 import { RootState } from "../../store/store";
@@ -23,7 +23,7 @@ function BoostersTable() {
 
   // Fetch boosters on component mount
   useEffect(() => {
-    getBoosters()
+    getBoostersApi()
       .then((response) => response.json())
       .then((boosters: BoosterResponse[]) => dispatch(updateBoosters(boosters)))
       .catch((err: any) => setError(err.message))
@@ -101,6 +101,7 @@ function BoostersTable() {
                <TableCell align="center">Price</TableCell>
                <TableCell align="center">Duration</TableCell>
                <TableCell align="center">Status</TableCell>
+               <TableCell align="center"></TableCell>
              </TableRow>
            </TableHead>
            <TableBody>

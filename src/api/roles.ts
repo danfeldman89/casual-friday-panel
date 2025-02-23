@@ -6,7 +6,7 @@ function getAuthToken(): string | null {
   return localStorage.getItem("authToken");
 }
 
-export async function getRoles(): Promise<Response> {
+export async function getRolesApi(): Promise<Response> {
   return fetch(BASE_URL_ROLES, {
     method: "GET",
     headers: {
@@ -16,7 +16,7 @@ export async function getRoles(): Promise<Response> {
   });
 }
 
-export async function getRoleById(roleId: string): Promise<Response> {
+export async function getRoleByIdApi(roleId: string): Promise<Response> {
   const url = `${BASE_URL_ROLES}/${roleId}`;
   return fetch(url, {
     method: "GET",
@@ -27,7 +27,7 @@ export async function getRoleById(roleId: string): Promise<Response> {
   });
 }
 
-export async function createRole(role: {
+export async function createRoleApi(role: {
   name: string;
   description: string;
   permissions: Permission[];
@@ -42,7 +42,7 @@ export async function createRole(role: {
   });
 }
 
-export async function updateRole(
+export async function updateRoleApi(
   roleId: string,
   updatedData: Role): Promise<Response> {
   const url = `${BASE_URL_ROLES}/${roleId}`;
@@ -56,7 +56,7 @@ export async function updateRole(
   });
 }
 
-export async function deleteRole(roleId: string): Promise<Response> {
+export async function deleteRoleApi(roleId: string): Promise<Response> {
   const url = `${BASE_URL_ROLES}/${roleId}`;
   return fetch(url, {
     method: "DELETE",

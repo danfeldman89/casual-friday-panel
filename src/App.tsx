@@ -50,6 +50,7 @@ function App() {
 
 
         <Route path="/edit-user/:id" element={<ModifyUserPage />} />
+        <Route path="/edit-role/:id" element={<ModifyRolePage />} />
         <Route path="/edit-booster/:id" element={<ModifyBoosterPage />} />
       </Routes>
     </Router>

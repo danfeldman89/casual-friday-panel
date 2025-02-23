@@ -6,7 +6,7 @@ function getAuthToken(): string | null {
   return localStorage.getItem("authToken");
 }
 
-export async function getBoosters(): Promise<Response> {
+export async function getBoostersApi(): Promise<Response> {
   return fetch(BASE_URL_BOOSTERS, {
     method: "GET",
     headers: {
@@ -16,7 +16,7 @@ export async function getBoosters(): Promise<Response> {
   });
 }
 
-export async function getBoosterById(boosterId: string): Promise<Response> {
+export async function getBoosterByIdApi(boosterId: string): Promise<Response> {
   const url = `${BASE_URL_BOOSTERS}/${boosterId}`;
   return fetch(url, {
     method: "GET",
@@ -27,7 +27,7 @@ export async function getBoosterById(boosterId: string): Promise<Response> {
   });
 }
 
-export async function createBooster(booster: {
+export async function createBoosterApi(booster: {
   name: string;
   description: string;
   isActive: boolean;
@@ -42,7 +42,7 @@ export async function createBooster(booster: {
   });
 }
 
-export async function updateBooster(
+export async function updateBoosterApi(
   boosterId: string,
   updatedData: Booster
 ): Promise<Response> {
@@ -58,7 +58,7 @@ export async function updateBooster(
 }
 
 //TODO
-export async function deleteBooster(boosterId: string): Promise<Response> {
+export async function deleteBoosterApi(boosterId: string): Promise<Response> {
   const url = `${BASE_URL_BOOSTERS}/${boosterId}`;
   return fetch(url, {
     method: "DELETE",

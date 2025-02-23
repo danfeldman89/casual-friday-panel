@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store.ts";
 import { useNavigate, useParams } from "react-router-dom";
 import { Close } from "@mui/icons-material";
-import { createUser, updateUser } from "../../api/user.ts";
+import { createUserApi, updateUserApi } from "../../api/user.ts";
 import { User } from "../../types/types.tsx"; // Ensure you have a function to fetch a user by ID
 
 function ModifyUserPage() {
@@ -56,7 +56,7 @@ function ModifyUserPage() {
     e.preventDefault();
     if (id) {
       // Update user logic
-      updateUser(formUser)
+      updateUserApi(formUser)
         .then((response) => {
           if (response.ok) {
             alert("User updated successfully!");
@@ -72,7 +72,7 @@ function ModifyUserPage() {
         });
     } else {
       // Create user logic
-      createUser(formUser)
+      createUserApi(formUser)
         .then((response) => {
           if (response.ok) {
             alert("User created successfully!");
